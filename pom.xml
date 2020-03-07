@@ -74,7 +74,46 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<!-- Plugin to make src/it/java folder recognizable by mave and compilern-->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>add-test-source</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/integration-test/java</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Plugin to run integration tests -->
+			<plugin>
+			  <groupId>org.apache.maven.plugins</groupId>
+			  <artifactId>maven-failsafe-plugin</artifactId>
+			  <executions>
+				<execution>
+				  <id>integration-test</id>
+				  <goals>
+					<goal>integration-test</goal>
+				  </goals>
+				</execution>
+				<execution>
+				  <id>verify</id>
+				  <goals>
+					<goal>verify</goal>
+				  </goals>
+				</execution>
+			  </executions>
+			</plugin>
 		</plugins>
+
 	</build>
 
 </project>
