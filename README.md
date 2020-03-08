@@ -23,13 +23,13 @@ logging.level.root=DEBUG
 ## Testing
 * Pour lancer les tests unitaires (plugin maven surefire) :
 
-
+```bash
     mvn test
-    
+```    
 * Pour lancer les tests d'intégration (plugin maven fail-safe) :
-
-
+```bash
     mvn verify
+```
 
 * Pour tester l'api en ligne de commande:
 ```bash
