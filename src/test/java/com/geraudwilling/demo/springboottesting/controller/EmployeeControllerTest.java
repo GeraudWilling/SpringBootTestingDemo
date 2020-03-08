@@ -82,7 +82,7 @@ public class EmployeeControllerTest {
                 .thenReturn(EmployeeClientResponse.builder().data(employees).status("success").build());
         // When
         MvcResult result = mvc.perform( MockMvcRequestBuilders
-                .get("/api/employees"))
+                .get("/api/employees/external"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
@@ -100,7 +100,7 @@ public class EmployeeControllerTest {
                 .thenReturn(EmployeeClientResponse.builder().status("error").build());
         // When
         ResultActions resultActions = mvc.perform(MockMvcRequestBuilders
-                .get("/api/employees/"))
+                .get("/api/employees/external"))
                 .andDo(print());
         // Then
         resultActions.andExpect(status().isInternalServerError());

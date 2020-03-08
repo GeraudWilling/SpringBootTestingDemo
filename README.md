@@ -8,8 +8,14 @@ Java Open JDK >= 1.8
 ## Développement
 
 Lancer l'application Spring Boot avec la commande
-
+```
     mvn spring-boot:run
+```
+Lancer une base de donnée PostgreSql pour l'application
+````properties
+    docker run -p 5432:5432 --name some-postgis -e POSTGRES_PASSWORD=password \
+    -e POSTGRES_USER=sa  -e POSTGRES_DB=postgre -d mdillon/postgis
+````
 L'application se lance par défaut sur le port 8080.
 
 ## Configuration

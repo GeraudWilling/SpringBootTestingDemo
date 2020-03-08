@@ -37,9 +37,9 @@ public class EmployeeController {
         return employeeService.findEmployeeById(employeeId);
     }
 
-    @GetMapping()
+    @GetMapping("/external")
     @ResponseStatus(code = HttpStatus.OK)
-    public List<Employee> getEmployees() {
+    public List<Employee> getExternalEmployees() {
         EmployeeClientResponse response = employeeService.findAllEmployees();
         if(response == null || !HTTP_SUCCESS.equalsIgnoreCase(response.getStatus())){
             throw new InternalServerError("Fatal error when fetching employee list from distant Api.");
