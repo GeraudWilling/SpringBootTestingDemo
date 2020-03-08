@@ -1,25 +1,20 @@
-package com.geraudwilling.demo.springboottesting.service.impl;
+package com.geraudwilling.demo.springboottesting.service;
 
 import com.geraudwilling.demo.springboottesting.client.EmployeeClient;
 import com.geraudwilling.demo.springboottesting.client.EmployeeClientResponse;
 import com.geraudwilling.demo.springboottesting.entity.Employee;
 import com.geraudwilling.demo.springboottesting.exception.ConflictException;
-import com.geraudwilling.demo.springboottesting.exception.InternalServerError;
 import com.geraudwilling.demo.springboottesting.exception.NotFoundException;
 import com.geraudwilling.demo.springboottesting.repository.EmployeeRepository;
-import com.geraudwilling.demo.springboottesting.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class EmployeeServiceImpl implements EmployeeService {
-
-    private final String HTTP_SUCCESS = "success";
 
     @Autowired
     EmployeeRepository employeeRepository;
@@ -31,18 +26,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee save(Employee employee) {
         Optional<Employee> existing = employeeRepository.findById(employee.getId());
         if(existing.isPresent()){
-            throw new ConflictException("Employee already exist :-( ");
+            throw new ConflictException("Employee already exists");
         }
         return employeeRepository.save(employee);
     }
 
     @Override
-    public List<Employee> findAllEmployees() {
-        EmployeeClientResponse response = employeeClient.getEmployees();
-        if(response == null || !HTTP_SUCCESS.equalsIgnoreCase(response.getStatus())){
-            throw new InternalServerError("Fatal error when fetching employee list from distant Api.");
-        }
-        return response.getData();
+    public EmployeeClientResponse findAllEmployees() {
+        return employeeClient.getEmployees();
     }
 
     @Override

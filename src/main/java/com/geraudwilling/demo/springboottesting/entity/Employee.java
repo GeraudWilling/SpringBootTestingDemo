@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Data
@@ -16,6 +17,7 @@ public class Employee {
     Long id;
 
     @JsonProperty("employee_name")
+    @NotEmpty()
     String employeeName;
 
     @JsonProperty("employee_salary")
@@ -25,5 +27,5 @@ public class Employee {
     int employeeAge;
 
     @JsonProperty("profile_image")
-    int profileImage;
+    String profileImage;
 }
