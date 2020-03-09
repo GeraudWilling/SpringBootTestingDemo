@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -46,6 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @SpringBootTest
 @Sql("classpath:add_employees.sql")
+@TestPropertySource(locations = "classpath:application.properties")
 @ContextConfiguration(initializers = {EmployeeControllerITTest.Initializer.class})
 public class EmployeeControllerITTest {
 
@@ -58,18 +60,24 @@ public class EmployeeControllerITTest {
     private ObjectMapper objectMapper;
 
     @ClassRule
-    public static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer()
+    public static PostgreSQLContainer postgreSQLContainer = (PostgreSQLContainer) new PostgreSQLContainer()
             .withDatabaseName("postgres")
             .withUsername("sa")
-            .withPassword("password");
+            .withPassword("password")
+            .withEnv("spring.datasource.driver-class-name","org.postgresql.Driver")
+            .withEnv("spring.jpa.hibernate.ddl-auto","create")
+            .withEnv("spring.datasource.url", "jdbc:postgresql://localhost:32798/postgres?currentSchema=demo");
+    ;
 
     static class Initializer
             implements ApplicationContextInitializer<ConfigurableApplicationContext> {
         public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
+            String test = postgreSQLContainer.getJdbcUrl();
             TestPropertyValues.of(
                     "spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
                     "spring.datasource.username=" + postgreSQLContainer.getUsername(),
-                    "spring.datasource.password=" + postgreSQLContainer.getPassword()
+                    "spring.datasource.password=" + postgreSQLContainer.getPassword(),
+                    "spring.datasource.driver-class-name" + postgreSQLContainer.getDriverClassName()
             ).applyTo(configurableApplicationContext.getEnvironment());
         }
     }

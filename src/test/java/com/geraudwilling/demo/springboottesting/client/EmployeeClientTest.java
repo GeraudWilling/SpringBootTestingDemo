@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.geraudwilling.demo.springboottesting.entity.Employee;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,7 +35,7 @@ public class EmployeeClientTest {
     @Autowired
     EmployeeClient employeeClient;
 
-    @Rule
+    @ClassRule
     // Mock Http server
     public WireMockRule wireMockRule = new WireMockRule(12345);
 
