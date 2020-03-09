@@ -5,13 +5,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.geraudwilling.demo.springboottesting.entity.Employee;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.util.TestPropertyValues;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+
 import static org.hamcrest.CoreMatchers.notNullValue;
 
 import java.util.Arrays;
@@ -21,16 +26,19 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.junit.Assert.assertThat;
+
 import org.hamcrest.collection.IsArray;
+import org.testcontainers.containers.PostgreSQLContainer;
 
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {EmployeeClientConfig.class})
-//@TestPropertySource(properties = {"feign.employee.url=http://localhost:12345"})
+@TestPropertySource(locations = "classpath:application.properties")
 public class EmployeeClientITTest {
 
     private EmployeeClientResponse employeeClientResponse;
     private ObjectMapper objectMapper;
+
 
     @Autowired
     EmployeeClient employeeClient;
@@ -48,7 +56,7 @@ public class EmployeeClientITTest {
     }
 
     @Before
-    public void setUp(){
+    public void setUp() {
         Employee employee1 = Employee.builder()
                 .id(1L)
                 .employeeAge(25)
