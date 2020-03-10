@@ -1,27 +1,28 @@
 package com.geraudwilling.demo.springboottesting.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.geraudwilling.demo.springboottesting.client.EmployeeClientITTest;
-import com.geraudwilling.demo.springboottesting.client.EmployeeClientResponse;
+import com.geraudwilling.demo.springboottesting.SpringBootTestingApplication;
 import com.geraudwilling.demo.springboottesting.entity.Employee;
-import com.geraudwilling.demo.springboottesting.service.EmployeeService;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.util.TestPropertyValues;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -30,29 +31,26 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.containers.PostgreSQLContainer;
 
+import javax.sql.DataSource;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
-@SpringBootTest
+@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
+@SpringBootTest(classes = SpringBootTestingApplication.class,
+        webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql("classpath:add_employees.sql")
-@TestPropertySource(locations = "classpath:application.properties")
 @ContextConfiguration(initializers = {EmployeeControllerITTest.Initializer.class})
 public class EmployeeControllerITTest {
 
-    @Autowired
-    private EmployeeService employeeService;
+    @LocalServerPort
+    int randomServerPort;
 
     @Autowired
     private MockMvc mvc;
@@ -60,25 +58,42 @@ public class EmployeeControllerITTest {
     private ObjectMapper objectMapper;
 
     @ClassRule
-    public static PostgreSQLContainer postgreSQLContainer = (PostgreSQLContainer) new PostgreSQLContainer()
+    public static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer()
             .withDatabaseName("postgres")
             .withUsername("sa")
-            .withPassword("password")
-            .withEnv("spring.datasource.driver-class-name","org.postgresql.Driver")
-            .withEnv("spring.jpa.hibernate.ddl-auto","create")
-            .withEnv("spring.datasource.url", "jdbc:postgresql://localhost:32798/postgres?currentSchema=demo");
-    ;
+            .withPassword("password");
 
     static class Initializer
             implements ApplicationContextInitializer<ConfigurableApplicationContext> {
         public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
-            String test = postgreSQLContainer.getJdbcUrl();
+            String url = postgreSQLContainer.getJdbcUrl();
+            String driverClassName = postgreSQLContainer.getDriverClassName();
+            postgreSQLContainer.setPortBindings(Arrays.asList(new String[]{"5432:5432"}));
+
             TestPropertyValues.of(
-                    "spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
+                    "spring.datasource.url" + postgreSQLContainer.getJdbcUrl(),
                     "spring.datasource.username=" + postgreSQLContainer.getUsername(),
                     "spring.datasource.password=" + postgreSQLContainer.getPassword(),
-                    "spring.datasource.driver-class-name" + postgreSQLContainer.getDriverClassName()
+                    "spring.datasource.driver-class-name=" + postgreSQLContainer.getDriverClassName(),
+                    "spring.jpa.hibernate.ddl-auto=create",
+                    "spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect",
+                    "spring.datasource.hikari.connectionTimeout=20000",
+                    "spring.datasource.hikari.maximumPoolSize=5",
+                    "feign.employee.url=http://dummy.restapiexample.com"
             ).applyTo(configurableApplicationContext.getEnvironment());
+        }
+    }
+
+    @Configuration
+    static class DatasourceConfig {
+        @Bean
+        public DataSource datasource() {
+            return DataSourceBuilder.create()
+                    .driverClassName(postgreSQLContainer.getDriverClassName())
+                    .url(postgreSQLContainer.getJdbcUrl())
+                    .username(postgreSQLContainer.getUsername())
+                    .password(postgreSQLContainer.getPassword())
+                    .build();
         }
     }
 

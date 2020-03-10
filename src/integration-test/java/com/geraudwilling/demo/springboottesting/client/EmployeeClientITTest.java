@@ -51,32 +51,8 @@ public class EmployeeClientITTest {
         // Then
         assertThat(responseList.getStatus(), equalToIgnoringCase("success"));
         assertThat(responseList.getData(), is(notNullValue()));
-        assertThat(responseList.getData().get(0).getEmployeeName(), is("Toto"));
-        assertThat(responseList.getData().get(1).getEmployeeName(), is("Titi"));
+        assertThat(responseList.getData().get(0).getEmployeeName(), is(notNullValue()));
+        assertThat(responseList.getData().get(0).getId(), is(notNullValue()));
     }
-
-    @Before
-    public void setUp() {
-        Employee employee1 = Employee.builder()
-                .id(1L)
-                .employeeAge(25)
-                .employeeSalary(2000)
-                .employeeName("Toto")
-                .profileImage("")
-                .build();
-        Employee employee2 = Employee.builder()
-                .id(2L)
-                .employeeAge(52)
-                .employeeSalary(2000)
-                .employeeName("Titi")
-                .profileImage("")
-                .build();
-        employeeClientResponse = EmployeeClientResponse.builder()
-                .data(Arrays.asList(new Employee[]{employee1, employee2}))
-                .status("SUCCESS")
-                .build();
-        objectMapper = new ObjectMapper();
-    }
-
 
 }
