@@ -186,38 +186,38 @@
 
     </build>
 
-    <repositories>
-        <repository>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-                <checksumPolicy>warn</checksumPolicy>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-                <updatePolicy>never</updatePolicy>
-                <checksumPolicy>warn</checksumPolicy>
-            </snapshots>
-            <id>Map</id>
-            <name/>
-            <url>https://orion.national.agri/artifactory/Map</url>
-        </repository>
+<!--    <repositories>-->
+<!--        <repository>-->
+<!--            <releases>-->
+<!--                <enabled>true</enabled>-->
+<!--                <updatePolicy>never</updatePolicy>-->
+<!--                <checksumPolicy>warn</checksumPolicy>-->
+<!--            </releases>-->
+<!--            <snapshots>-->
+<!--                <enabled>false</enabled>-->
+<!--                <updatePolicy>never</updatePolicy>-->
+<!--                <checksumPolicy>warn</checksumPolicy>-->
+<!--            </snapshots>-->
+<!--            <id>Map</id>-->
+<!--            <name/>-->
+<!--            <url>https://orion.national.agri/artifactory/Map</url>-->
+<!--        </repository>-->
 
-        <repository>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-                <checksumPolicy>warn</checksumPolicy>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-                <updatePolicy>never</updatePolicy>
-                <checksumPolicy>warn</checksumPolicy>
-            </snapshots>
-            <id>Project</id>
-            <name/>
-            <url>https://orion.national.agri/repository/Project</url>
-        </repository>
-    </repositories>
+<!--        <repository>-->
+<!--            <releases>-->
+<!--                <enabled>true</enabled>-->
+<!--                <updatePolicy>never</updatePolicy>-->
+<!--                <checksumPolicy>warn</checksumPolicy>-->
+<!--            </releases>-->
+<!--            <snapshots>-->
+<!--                <enabled>false</enabled>-->
+<!--                <updatePolicy>never</updatePolicy>-->
+<!--                <checksumPolicy>warn</checksumPolicy>-->
+<!--            </snapshots>-->
+<!--            <id>Project</id>-->
+<!--            <name/>-->
+<!--            <url>https://orion.national.agri/repository/Project</url>-->
+<!--        </repository>-->
+<!--    </repositories>-->
 
 </project>
