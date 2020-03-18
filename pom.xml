@@ -14,6 +14,14 @@
     <name>spring-boot-testing</name>
     <description>Demo project for Unit and Integration testing with Spring Boot</description>
 
+    <developers>
+        <developer>
+            <id>gw</id>
+            <name>Géraud Willing</name>
+            <email>contact@geraudwilling.com</email>
+        </developer>
+    </developers>
+
     <properties>
         <java.version>1.8</java.version>
         <spring-cloud.version>Hoxton.SR1</spring-cloud.version>
@@ -128,7 +136,7 @@
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
             </plugin>
-            <!-- Plugin to make src/it/java folder recognizable by maven and compiler-->
+            <!-- Plugin to make integration-test folder recognizable by maven and compiler-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -142,6 +150,7 @@
                         <configuration>
                             <sources>
                                 <source>src/integration-test/java</source>
+                                <source>src/test/java</source>
                             </sources>
                         </configuration>
                     </execution>
@@ -155,6 +164,7 @@
                             <resources>
                                 <resource>
                                     <directory>src/integration-test/resources</directory>
+                                    <directory>src/test/resources</directory>
                                 </resource>
                             </resources>
                         </configuration>
@@ -179,50 +189,10 @@
                     </includes>
                 </configuration>
             </plugin>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>**/*ITTest.java</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
+
         </plugins>
 
     </build>
 
-<!--    <repositories>-->
-<!--        <repository>-->
-<!--            <releases>-->
-<!--                <enabled>true</enabled>-->
-<!--                <updatePolicy>never</updatePolicy>-->
-<!--                <checksumPolicy>warn</checksumPolicy>-->
-<!--            </releases>-->
-<!--            <snapshots>-->
-<!--                <enabled>false</enabled>-->
-<!--                <updatePolicy>never</updatePolicy>-->
-<!--                <checksumPolicy>warn</checksumPolicy>-->
-<!--            </snapshots>-->
-<!--            <id>Map</id>-->
-<!--            <name/>-->
-<!--            <url>https://orion.national.agri/artifactory/Map</url>-->
-<!--        </repository>-->
-
-<!--        <repository>-->
-<!--            <releases>-->
-<!--                <enabled>true</enabled>-->
-<!--                <updatePolicy>never</updatePolicy>-->
-<!--                <checksumPolicy>warn</checksumPolicy>-->
-<!--            </releases>-->
-<!--            <snapshots>-->
-<!--                <enabled>false</enabled>-->
-<!--                <updatePolicy>never</updatePolicy>-->
-<!--                <checksumPolicy>warn</checksumPolicy>-->
-<!--            </snapshots>-->
-<!--            <id>Project</id>-->
-<!--            <name/>-->
-<!--            <url>https://orion.national.agri/repository/Project</url>-->
-<!--        </repository>-->
-<!--    </repositories>-->
 
 </project>

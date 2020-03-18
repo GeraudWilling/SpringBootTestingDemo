@@ -27,7 +27,7 @@ public class EmployeeController {
 
     @GetMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
-    public @ResponseBody  Employee getEmployee(@PathVariable String id) {
+    public Employee getEmployee(@PathVariable String id) {
         Long employeeId = null;
         try {
             employeeId = Long.parseLong(id);
