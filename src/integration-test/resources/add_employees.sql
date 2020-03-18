@@ -1,11 +1,4 @@
-CREATE TABLE Employee (
-   id  integer PRIMARY KEY,
-   employee_name  varchar NOT NULL,
-   employee_salary  integer,
-   employee_age  integer,
-   profile_image  varchar
-) ;
-
+-- Prepopulate DB for integration tests
 INSERT INTO Employee(id,employee_name,employee_salary,employee_age,profile_image)
     VALUES(1,'Toto', 2000, 25, '');
 INSERT INTO Employee(id,employee_name,employee_salary,employee_age,profile_image)

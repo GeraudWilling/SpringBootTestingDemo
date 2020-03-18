@@ -37,7 +37,7 @@ public class EmployeeClientTest {
 
     @ClassRule
     // Mock Http server
-    public WireMockRule wireMockRule = new WireMockRule(12345);
+    public static WireMockRule wireMockRule = new WireMockRule(12345);
 
 
     @Test

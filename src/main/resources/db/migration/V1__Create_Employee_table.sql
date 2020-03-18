@@ -1,7 +1,7 @@
-CREATE TABLE IF NOT EXISTS `employee` (
-   id int NOT NULL PRIMARY KEY,
-   employeeSalary int,
-   employeeName varchar,
-   employeeAge int,
-   profile_image varchar,
+CREATE TABLE IF NOT EXISTS Employee (
+   id  integer PRIMARY KEY,
+   employee_name  varchar NOT NULL,
+   employee_salary  integer,
+   employee_age  integer,
+   profile_image  varchar
 ) ;
