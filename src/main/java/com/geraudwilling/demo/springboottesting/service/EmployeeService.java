@@ -3,8 +3,6 @@ package com.geraudwilling.demo.springboottesting.service;
 import com.geraudwilling.demo.springboottesting.client.EmployeeClientResponse;
 import com.geraudwilling.demo.springboottesting.entity.Employee;
 
-import java.util.List;
-
 
 public interface EmployeeService {
 

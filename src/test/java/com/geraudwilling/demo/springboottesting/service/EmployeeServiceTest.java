@@ -28,7 +28,7 @@ import static org.mockito.Mockito.*;
 public class EmployeeServiceTest {
 
     @Autowired
-    // Spring inject le bean grâce au TestConfiguration
+    // Spring injecte le bean grâce au TestConfiguration
     EmployeeService employeeService;
 
     @MockBean
@@ -44,7 +44,7 @@ public class EmployeeServiceTest {
 
 
     @TestConfiguration
-    // Ajout du Bean EmployeeService dans le context de configuration Spring
+    // Ajout du Bean EmployeeServiceImpl dans le context de configuration Spring
     static class employeeServiceTestConfiguration{
         @Bean
         EmployeeService employeeServiceInjector(){
